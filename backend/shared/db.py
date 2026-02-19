@@ -78,6 +78,50 @@ class Database:
 db = Database()
 
 
+# Connection pool for sync endpoints
+_pool: Optional[asyncpg.Pool] = None
+
+
+async def get_db_pool() -> asyncpg.Pool:
+    """
+    Get or create database connection pool
+    Used by sync endpoints for direct pool access
+    """
+    global _pool
+
+    if _pool is None:
+        # Connection parameters
+        conn_params = {
+            "host": config.DATABASE_HOST,
+            "port": config.DATABASE_PORT,
+            "database": config.DATABASE_NAME,
+            "user": config.DATABASE_USER,
+            "password": config.DATABASE_PASSWORD,
+            "min_size": 2,
+            "max_size": 10,
+            "command_timeout": 30
+        }
+
+        # Add SSL for Azure connections
+        if "azure.com" in config.DATABASE_HOST or "postgres.database" in config.DATABASE_HOST:
+            conn_params["ssl"] = "require"
+
+        _pool = await asyncpg.create_pool(**conn_params)
+        logger.info("Database connection pool created (get_db_pool)")
+
+    return _pool
+
+
+async def close_db_pool():
+    """Close the database connection pool"""
+    global _pool
+
+    if _pool is not None:
+        await _pool.close()
+        _pool = None
+        logger.info("Database connection pool closed")
+
+
 def record_to_dict(record: Optional[asyncpg.Record]) -> Optional[Dict[str, Any]]:
     """Convert asyncpg Record to dictionary"""
     if record is None:
