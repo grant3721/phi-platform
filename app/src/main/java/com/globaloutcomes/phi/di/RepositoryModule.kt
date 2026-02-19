@@ -1,10 +1,14 @@
 package com.globaloutcomes.phi.di
 
 import com.globaloutcomes.phi.data.repository.BarangayRepositoryImpl
+import com.globaloutcomes.phi.data.repository.ConfigThresholdRepositoryImpl
 import com.globaloutcomes.phi.data.repository.PatientRepositoryImpl
+import com.globaloutcomes.phi.data.repository.ReferralRepositoryImpl
 import com.globaloutcomes.phi.data.repository.ScanRepositoryImpl
 import com.globaloutcomes.phi.domain.repository.BarangayRepository
+import com.globaloutcomes.phi.domain.repository.ConfigThresholdRepository
 import com.globaloutcomes.phi.domain.repository.PatientRepository
+import com.globaloutcomes.phi.domain.repository.ReferralRepository
 import com.globaloutcomes.phi.domain.repository.ScanRepository
 import dagger.Binds
 import dagger.Module
@@ -36,4 +40,16 @@ abstract class RepositoryModule {
     abstract fun bindBarangayRepository(
         barangayRepositoryImpl: BarangayRepositoryImpl
     ): BarangayRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindConfigThresholdRepository(
+        configThresholdRepositoryImpl: ConfigThresholdRepositoryImpl
+    ): ConfigThresholdRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindReferralRepository(
+        referralRepositoryImpl: ReferralRepositoryImpl
+    ): ReferralRepository
 }

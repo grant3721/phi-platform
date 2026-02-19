@@ -11,6 +11,8 @@ import com.globaloutcomes.phi.domain.scan.ScanConfig
 import com.globaloutcomes.phi.domain.scan.ScanEngine
 import com.globaloutcomes.phi.domain.scan.ScanSessionState
 import com.globaloutcomes.phi.domain.scan.UserInfo
+import com.globaloutcomes.phi.domain.usecase.referral.CreateReferralUseCase
+import com.globaloutcomes.phi.domain.usecase.scan.AssessRiskUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -25,6 +27,8 @@ class ScanViewModel @Inject constructor(
     private val scanEngine: ScanEngine,
     private val patientRepository: PatientRepository,
     private val scanRepository: ScanRepository,
+    private val assessRiskUseCase: AssessRiskUseCase,
+    private val createReferralUseCase: CreateReferralUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -152,6 +156,9 @@ class ScanViewModel @Inject constructor(
 
         scanRepository.insert(scan)
             .onSuccess {
+                // Assess risk after scan is saved
+                assessRiskAndCreateReferral(scan.id)
+
                 _state.update {
                     it.copy(
                         scanInProgress = false,
@@ -168,6 +175,28 @@ class ScanViewModel @Inject constructor(
                     )
                 }
             }
+    }
+
+    private suspend fun assessRiskAndCreateReferral(scanId: String) {
+        // Assess risk
+        val riskAssessment = assessRiskUseCase(scanId)
+        if (riskAssessment.isFailure) {
+            // Log error but don't fail the scan
+            return
+        }
+
+        val assessment = riskAssessment.getOrNull() ?: return
+
+        // Create referral if high risk detected
+        if (assessment.requiresReferral) {
+            createReferralUseCase(
+                scanId = scanId,
+                riskFlags = assessment.riskReasons,
+                notes = "Automatic referral: High-risk scan detected"
+            )
+            // Note: We don't check result here - referral will be created in background
+            // If it fails, it will be retried during sync
+        }
     }
 
     fun dismissError() {

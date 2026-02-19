@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import com.globaloutcomes.phi.presentation.home.HomeScreen
 import com.globaloutcomes.phi.presentation.patient.list.PatientListScreen
 import com.globaloutcomes.phi.presentation.patient.registration.RegistrationScreen
+import com.globaloutcomes.phi.presentation.referral.detail.ReferralDetailScreen
 import com.globaloutcomes.phi.presentation.referral.list.ReferralListScreen
 import com.globaloutcomes.phi.presentation.scan.ScanScreen
 import com.globaloutcomes.phi.presentation.scan.result.ScanResultScreen
@@ -114,6 +115,20 @@ fun GoNavGraph(
                 onNavigateToReferralDetail = { referralId ->
                     navController.navigate(Routes.ReferralDetail.createRoute(referralId))
                 },
+                onNavigateBack = { navController.navigateUp() }
+            )
+        }
+
+        // Referral Detail Screen
+        composable(
+            route = Routes.ReferralDetail.route,
+            arguments = listOf(
+                navArgument("referralId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val referralId = backStackEntry.arguments?.getString("referralId") ?: return@composable
+            ReferralDetailScreen(
+                referralId = referralId,
                 onNavigateBack = { navController.navigateUp() }
             )
         }
