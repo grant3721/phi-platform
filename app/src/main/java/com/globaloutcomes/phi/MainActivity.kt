@@ -4,13 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.globaloutcomes.phi.navigation.GoBottomNavBar
+import com.globaloutcomes.phi.navigation.GoNavGraph
+import com.globaloutcomes.phi.navigation.Routes
 import com.globaloutcomes.phi.presentation.theme.GlobalOutcomesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,29 +26,41 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GlobalOutcomesTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "PHI Platform",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                PhiApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Global Outcomes $name",
-        modifier = modifier
-    )
+fun PhiApp() {
+    val navController = rememberNavController()
+
+    Scaffold(
+        bottomBar = {
+            // Only show bottom nav on main screens
+            val currentRoute = navController.currentBackStackEntry?.destination?.route
+            if (currentRoute in Routes.bottomNavRoutes.map { it.route }) {
+                GoBottomNavBar(navController = navController)
+            }
+        }
+    ) { innerPadding ->
+        GoNavGraph(
+            navController = navController,
+            startDestination = Routes.Home.route,
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    GlobalOutcomesTheme {
-        Greeting("PHI Platform")
-    }
+private fun GoNavGraph(
+    navController: androidx.navigation.NavHostController,
+    startDestination: String,
+    modifier: Modifier
+) {
+    com.globaloutcomes.phi.navigation.GoNavGraph(
+        navController = navController,
+        startDestination = startDestination
+    )
 }

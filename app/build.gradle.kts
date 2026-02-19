@@ -121,6 +121,9 @@ dependencies {
     // ML Kit Face Detection (scan framing guide)
     implementation("com.google.mlkit:face-detection:16.1.7")
 
+    // Accompanist Permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.36.0")
+
     // Lottie
     implementation("com.airbnb.android:lottie-compose:6.6.2")
 
@@ -132,6 +135,9 @@ dependencies {
 
     // Biometric
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
+
+    // BiosenseSignal SDK (Face Vitals Scanning)
+    implementation(files("libs/biosensesignalsdk.aar"))
 
     // Vosk (Offline Voice Recognition)
     implementation("com.alphacephei:vosk-android:0.3.47")
