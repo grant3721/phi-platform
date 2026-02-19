@@ -133,6 +133,9 @@ dependencies {
     // Biometric
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
 
+    // BiosenseSignal SDK (Face Vitals Scanning)
+    implementation(files("libs/biosensesignalsdk.aar"))
+
     // Vosk (Offline Voice Recognition)
     implementation("com.alphacephei:vosk-android:0.3.47")
 
