@@ -1,0 +1,47 @@
+# Docker Compose for PHI Platform PostgreSQL Database
+# Run with: docker-compose up -d
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: phi-postgres
+    environment:
+      POSTGRES_DB: phi_platform
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: phi_dev_password_123
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+# Usage:
+# 1. Start database:
+#    docker-compose up -d
+#
+# 2. View logs:
+#    docker-compose logs -f postgres
+#
+# 3. Connect to database:
+#    docker exec -it phi-postgres psql -U postgres -d phi_platform
+#
+# 4. Stop database:
+#    docker-compose down
+#
+# 5. Stop and remove data:
+#    docker-compose down -v
+#
+# Migrations will run automatically on first startup (from /migrations folder)
