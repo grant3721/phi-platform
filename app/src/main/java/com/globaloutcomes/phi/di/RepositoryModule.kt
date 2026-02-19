@@ -5,11 +5,13 @@ import com.globaloutcomes.phi.data.repository.ConfigThresholdRepositoryImpl
 import com.globaloutcomes.phi.data.repository.PatientRepositoryImpl
 import com.globaloutcomes.phi.data.repository.ReferralRepositoryImpl
 import com.globaloutcomes.phi.data.repository.ScanRepositoryImpl
+import com.globaloutcomes.phi.data.repository.SurveyRepositoryImpl
 import com.globaloutcomes.phi.domain.repository.BarangayRepository
 import com.globaloutcomes.phi.domain.repository.ConfigThresholdRepository
 import com.globaloutcomes.phi.domain.repository.PatientRepository
 import com.globaloutcomes.phi.domain.repository.ReferralRepository
 import com.globaloutcomes.phi.domain.repository.ScanRepository
+import com.globaloutcomes.phi.domain.repository.SurveyRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -52,4 +54,10 @@ abstract class RepositoryModule {
     abstract fun bindReferralRepository(
         referralRepositoryImpl: ReferralRepositoryImpl
     ): ReferralRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSurveyRepository(
+        surveyRepositoryImpl: SurveyRepositoryImpl
+    ): SurveyRepository
 }

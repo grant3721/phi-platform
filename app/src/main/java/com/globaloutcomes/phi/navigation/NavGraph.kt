@@ -14,6 +14,8 @@ import com.globaloutcomes.phi.presentation.referral.list.ReferralListScreen
 import com.globaloutcomes.phi.presentation.scan.ScanScreen
 import com.globaloutcomes.phi.presentation.scan.result.ScanResultScreen
 import com.globaloutcomes.phi.presentation.settings.SettingsScreen
+import com.globaloutcomes.phi.presentation.survey.infectious.InfectiousSurveyScreen
+import com.globaloutcomes.phi.presentation.survey.mental.MentalHealthSurveyScreen
 
 /**
  * Navigation Graph - Defines all navigation routes and composable screens
@@ -140,6 +142,44 @@ fun GoNavGraph(
                     navController.navigate(Routes.DevMenu.route)
                 },
                 onNavigateBack = { navController.navigateUp() }
+            )
+        }
+
+        // Infectious Disease Survey Screen
+        composable(
+            route = Routes.InfectiousSurvey.route,
+            arguments = listOf(
+                navArgument("scanId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val scanId = backStackEntry.arguments?.getString("scanId") ?: return@composable
+            InfectiousSurveyScreen(
+                scanId = scanId,
+                onNavigateBack = { navController.navigateUp() },
+                onNavigateToHome = {
+                    navController.navigate(Routes.Home.route) {
+                        popUpTo(Routes.Home.route) { inclusive = false }
+                    }
+                }
+            )
+        }
+
+        // Mental Health Survey Screen (PHQ-9)
+        composable(
+            route = Routes.MentalHealthSurvey.route,
+            arguments = listOf(
+                navArgument("scanId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val scanId = backStackEntry.arguments?.getString("scanId") ?: return@composable
+            MentalHealthSurveyScreen(
+                scanId = scanId,
+                onNavigateBack = { navController.navigateUp() },
+                onNavigateToHome = {
+                    navController.navigate(Routes.Home.route) {
+                        popUpTo(Routes.Home.route) { inclusive = false }
+                    }
+                }
             )
         }
 
