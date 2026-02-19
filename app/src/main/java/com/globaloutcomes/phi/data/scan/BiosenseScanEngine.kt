@@ -39,8 +39,8 @@ class BiosenseScanEngine @Inject constructor(
 ) : ScanEngine {
 
     companion object {
-        // TODO: Replace with actual license key from BiosenseSignal
-        private const val LICENSE_KEY = "<ENTER_YOUR_LICENSE_KEY>"
+        // BiosenseSignal SDK License Key
+        private const val LICENSE_KEY = "7EF6B5-2BA45D-4D97BF-CEBDA3-2EDEAD-080483"
         private const val MEASUREMENT_DURATION = 50L // SDK recommends 50-60 seconds for accuracy
     }
 
