@@ -26,16 +26,23 @@ async def run_migrations():
     print(f"\nConnecting to database: {config.DATABASE_HOST}:{config.DATABASE_PORT}/{config.DATABASE_NAME}")
 
     try:
-        conn = await asyncpg.connect(
-            host=config.DATABASE_HOST,
-            port=config.DATABASE_PORT,
-            database=config.DATABASE_NAME,
-            user=config.DATABASE_USER,
-            password=config.DATABASE_PASSWORD
-        )
-        print("✓ Connected successfully\n")
+        # Prepare connection parameters
+        conn_params = {
+            "host": config.DATABASE_HOST,
+            "port": config.DATABASE_PORT,
+            "database": config.DATABASE_NAME,
+            "user": config.DATABASE_USER,
+            "password": config.DATABASE_PASSWORD
+        }
+
+        # Add SSL for Azure connections
+        if "azure.com" in config.DATABASE_HOST or "postgres.database" in config.DATABASE_HOST:
+            conn_params["ssl"] = "require"
+
+        conn = await asyncpg.connect(**conn_params)
+        print("[OK] Connected successfully\n")
     except Exception as e:
-        print(f"✗ Failed to connect: {e}")
+        print(f"[ERROR] Failed to connect: {e}")
         return False
 
     # Get migration files
@@ -43,7 +50,7 @@ async def run_migrations():
     migration_files = sorted(migrations_dir.glob("*.sql"))
 
     if not migration_files:
-        print("✗ No migration files found in:", migrations_dir)
+        print("[ERROR] No migration files found in:", migrations_dir)
         await conn.close()
         return False
 
@@ -61,11 +68,11 @@ async def run_migrations():
             # Execute migration
             await conn.execute(sql)
 
-            print(f"✓ {migration_file.name} completed successfully\n")
+            print(f"[OK] {migration_file.name} completed successfully\n")
             success_count += 1
 
         except Exception as e:
-            print(f"✗ {migration_file.name} failed: {e}\n")
+            print(f"[ERROR] {migration_file.name} failed: {e}\n")
             # Continue with remaining migrations
 
     # Verify schemas
@@ -78,7 +85,7 @@ async def run_migrations():
     """)
 
     for schema in schemas:
-        print(f"✓ Schema: {schema['schema_name']}")
+        print(f"[OK] Schema: {schema['schema_name']}")
 
     # Count tables in each schema
     print("\nTable counts:")

@@ -1,20 +1,39 @@
 """
 Configuration management for Azure Functions
-Loads settings from environment variables
+Loads settings from environment variables or local.settings.json
 """
 import os
+import json
+from pathlib import Path
 from typing import Optional
+
+
+def load_local_settings():
+    """Load local.settings.json if it exists"""
+    settings_path = Path(__file__).parent.parent / "local.settings.json"
+    if settings_path.exists():
+        try:
+            with open(settings_path, 'r') as f:
+                data = json.load(f)
+                return data.get("Values", {})
+        except Exception:
+            pass
+    return {}
+
+
+# Load local settings
+_local_settings = load_local_settings()
 
 
 class Config:
     """Application configuration"""
 
     # Database
-    DATABASE_HOST: str = os.getenv("DATABASE_HOST", "localhost")
-    DATABASE_PORT: int = int(os.getenv("DATABASE_PORT", "5432"))
-    DATABASE_NAME: str = os.getenv("DATABASE_NAME", "phi_platform")
-    DATABASE_USER: str = os.getenv("DATABASE_USER", "postgres")
-    DATABASE_PASSWORD: str = os.getenv("DATABASE_PASSWORD", "")
+    DATABASE_HOST: str = os.getenv("DATABASE_HOST", _local_settings.get("DATABASE_HOST", "localhost"))
+    DATABASE_PORT: int = int(os.getenv("DATABASE_PORT", _local_settings.get("DATABASE_PORT", "5432")))
+    DATABASE_NAME: str = os.getenv("DATABASE_NAME", _local_settings.get("DATABASE_NAME", "phi_platform"))
+    DATABASE_USER: str = os.getenv("DATABASE_USER", _local_settings.get("DATABASE_USER", "postgres"))
+    DATABASE_PASSWORD: str = os.getenv("DATABASE_PASSWORD", _local_settings.get("DATABASE_PASSWORD", ""))
 
     @property
     def DATABASE_URL(self) -> str:

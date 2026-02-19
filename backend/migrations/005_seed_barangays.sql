@@ -61,7 +61,7 @@ INSERT INTO silver.barangays (id, name, municipality, province, region, populati
 
 -- Albay (Region V - Bicol)
 ('BRG041', 'Poblacion', 'Legazpi', 'Albay', 'Bicol', 14567, TRUE),
-('BRG042', 'Em's Barrio', 'Legazpi', 'Albay', 'Bicol', 11234, TRUE),
+('BRG042', 'Em''s Barrio', 'Legazpi', 'Albay', 'Bicol', 11234, TRUE),
 ('BRG043', 'Cabangan', 'Legazpi', 'Albay', 'Bicol', 9876, TRUE),
 
 -- Zamboanga (Region IX - Zamboanga Peninsula)

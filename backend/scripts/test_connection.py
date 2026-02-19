@@ -29,16 +29,25 @@ async def test_connection():
 
     try:
         print("Connecting...")
-        conn = await asyncpg.connect(
-            host=config.DATABASE_HOST,
-            port=config.DATABASE_PORT,
-            database=config.DATABASE_NAME,
-            user=config.DATABASE_USER,
-            password=config.DATABASE_PASSWORD,
-            timeout=10
-        )
 
-        print("✓ Connection successful!\n")
+        # Prepare connection parameters
+        conn_params = {
+            "host": config.DATABASE_HOST,
+            "port": config.DATABASE_PORT,
+            "database": config.DATABASE_NAME,
+            "user": config.DATABASE_USER,
+            "password": config.DATABASE_PASSWORD,
+            "timeout": 30
+        }
+
+        # Add SSL for Azure connections
+        if "azure.com" in config.DATABASE_HOST or "postgres.database" in config.DATABASE_HOST:
+            conn_params["ssl"] = "require"
+            print("(Using SSL for Azure connection)")
+
+        conn = await asyncpg.connect(**conn_params)
+
+        print("[OK] Connection successful!\n")
 
         # Get PostgreSQL version
         version = await conn.fetchval("SELECT version()")
@@ -54,7 +63,7 @@ async def test_connection():
         """)
 
         if schemas:
-            print("✓ Found schemas:")
+            print("[OK] Found schemas:")
             for schema in schemas:
                 # Count tables in this schema
                 table_count = await conn.fetchval("""
@@ -74,18 +83,18 @@ async def test_connection():
         start = time.time()
         await conn.fetchval("SELECT 1")
         duration = (time.time() - start) * 1000
-        print(f"✓ Query latency: {duration:.2f}ms\n")
+        print(f"[OK] Query latency: {duration:.2f}ms\n")
 
         await conn.close()
 
         print("=" * 60)
-        print("✓ All tests passed - Database ready!")
+        print("[OK] All tests passed - Database ready!")
         print("=" * 60)
         print()
         return True
 
     except asyncpg.InvalidCatalogNameError:
-        print(f"✗ Database '{config.DATABASE_NAME}' does not exist")
+        print(f"[ERROR] Database '{config.DATABASE_NAME}' does not exist")
         print("\nTo create the database, run:")
         print(f"  createdb -h {config.DATABASE_HOST} -p {config.DATABASE_PORT} -U {config.DATABASE_USER} {config.DATABASE_NAME}")
         print("\nOr connect to postgres and run:")
@@ -94,13 +103,13 @@ async def test_connection():
         return False
 
     except asyncpg.InvalidPasswordError:
-        print("✗ Authentication failed - Invalid password")
+        print("[ERROR] Authentication failed - Invalid password")
         print("\nCheck your DATABASE_PASSWORD in local.settings.json")
         print()
         return False
 
     except asyncpg.PostgresConnectionError as e:
-        print(f"✗ Connection failed: {e}")
+        print(f"[ERROR] Connection failed: {e}")
         print("\nPossible issues:")
         print("  1. PostgreSQL is not running")
         print("  2. Wrong host or port")
@@ -111,7 +120,7 @@ async def test_connection():
         return False
 
     except Exception as e:
-        print(f"✗ Unexpected error: {e}")
+        print(f"[ERROR] Unexpected error: {e}")
         print()
         return False
 

@@ -9,7 +9,19 @@
       "Bash(git merge:*)",
       "Bash(git tag:*)",
       "Bash(find:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(docker:*)",
+      "Bash(psql:*)",
+      "Bash(echo:*)",
+      "Bash(az:*)",
+      "Bash(curl:*)",
+      "Bash(python scripts/test_connection.py:*)",
+      "Bash(pip install:*)",
+      "Bash(set DATABASE_HOST=phi-platform-db-2026.postgres.database.azure.com)",
+      "Bash(set DATABASE_USER=phiadmin)",
+      "Bash(set DATABASE_PASSWORD=PHI_DevPass_123!)",
+      "Bash(python scripts/test_azure_connection.py:*)",
+      "Bash(python scripts/run_migrations.py:*)"
     ]
   }
 }

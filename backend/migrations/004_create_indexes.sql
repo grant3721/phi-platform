@@ -117,8 +117,4 @@ CREATE INDEX IF NOT EXISTS idx_gold_daily_date ON gold.daily_summary(summary_dat
 -- ========================================
 -- COMMENTS
 -- ========================================
-
-COMMENT ON INDEX idx_silver_patients_high_risk IS 'Partial index for high-risk patient queries';
-COMMENT ON INDEX idx_silver_scans_risk_flags_gin IS 'GIN index for JSON risk_flags searches';
-COMMENT ON INDEX idx_silver_referrals_pending IS 'Composite index for pending referral dashboard';
-COMMENT ON INDEX idx_gold_outbreak_active IS 'Partial index for active outbreak signals';
+-- Comments on indexes removed for Azure compatibility
