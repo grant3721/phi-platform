@@ -121,6 +121,9 @@ dependencies {
     // ML Kit Face Detection (scan framing guide)
     implementation("com.google.mlkit:face-detection:16.1.7")
 
+    // Accompanist Permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.36.0")
+
     // Lottie
     implementation("com.airbnb.android:lottie-compose:6.6.2")
 
