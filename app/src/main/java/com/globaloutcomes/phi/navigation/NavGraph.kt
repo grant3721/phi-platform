@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.globaloutcomes.phi.presentation.home.HomeScreen
+import com.globaloutcomes.phi.presentation.patient.detail.PatientDetailScreen
 import com.globaloutcomes.phi.presentation.patient.list.PatientListScreen
 import com.globaloutcomes.phi.presentation.patient.registration.RegistrationScreen
 import com.globaloutcomes.phi.presentation.referral.detail.ReferralDetailScreen
@@ -16,6 +17,7 @@ import com.globaloutcomes.phi.presentation.scan.result.ScanResultScreen
 import com.globaloutcomes.phi.presentation.settings.SettingsScreen
 import com.globaloutcomes.phi.presentation.survey.infectious.InfectiousSurveyScreen
 import com.globaloutcomes.phi.presentation.survey.mental.MentalHealthSurveyScreen
+import com.globaloutcomes.phi.presentation.survey.selection.SurveySelectionScreen
 
 /**
  * Navigation Graph - Defines all navigation routes and composable screens
@@ -60,6 +62,29 @@ fun GoNavGraph(
                         // Remove registration screen from back stack after successful registration
                         popUpTo(Routes.PatientList.route)
                     }
+                },
+                onNavigateBack = { navController.navigateUp() }
+            )
+        }
+
+        // Patient Detail Screen
+        composable(
+            route = Routes.PatientDetail.route,
+            arguments = listOf(
+                navArgument("patientId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val patientId = backStackEntry.arguments?.getString("patientId") ?: return@composable
+            PatientDetailScreen(
+                patientId = patientId,
+                onNavigateToScan = { id ->
+                    navController.navigate(Routes.Scan.createRoute(id))
+                },
+                onNavigateToScanResult = { scanId ->
+                    navController.navigate(Routes.ScanResult.createRoute(scanId))
+                },
+                onNavigateToEdit = { id ->
+                    navController.navigate(Routes.PatientEdit.createRoute(id))
                 },
                 onNavigateBack = { navController.navigateUp() }
             )
@@ -140,6 +165,37 @@ fun GoNavGraph(
             SettingsScreen(
                 onNavigateToDevMenu = {
                     navController.navigate(Routes.DevMenu.route)
+                },
+                onNavigateBack = { navController.navigateUp() }
+            )
+        }
+
+        // Survey Selection Screen
+        composable(
+            route = Routes.SurveySelection.route,
+            arguments = listOf(
+                navArgument("scanId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val scanId = backStackEntry.arguments?.getString("scanId") ?: return@composable
+            SurveySelectionScreen(
+                scanId = scanId,
+                onNavigateToNcdSurvey = { id ->
+                    navController.navigate(Routes.NcdSurvey.createRoute(id))
+                },
+                onNavigateToMaternalSurvey = { id ->
+                    navController.navigate(Routes.MaternalSurvey.createRoute(id))
+                },
+                onNavigateToInfectiousSurvey = { id ->
+                    navController.navigate(Routes.InfectiousSurvey.createRoute(id))
+                },
+                onNavigateToMentalHealthSurvey = { id ->
+                    navController.navigate(Routes.MentalHealthSurvey.createRoute(id))
+                },
+                onNavigateToHome = {
+                    navController.navigate(Routes.Home.route) {
+                        popUpTo(Routes.Home.route) { inclusive = false }
+                    }
                 },
                 onNavigateBack = { navController.navigateUp() }
             )
