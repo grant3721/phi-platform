@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PHI</string>
+
+    <!-- Home Screen -->
+    <string name="home_greeting">Magandang umaga</string>
+    <string name="home_scans_today">Scans Today</string>
+    <string name="home_earnings_today">Earnings Today</string>
+    <string name="home_daily_cap">Daily Cap</string>
+    <string name="home_new_scan">New Scan</string>
+    <string name="home_my_patients">My Patients</string>
+    <string name="home_sync_status">Sync Status</string>
+
+    <!-- Patient Registration -->
+    <string name="registration_title">New Patient Registration</string>
+    <string name="registration_phone">Phone Number</string>
+    <string name="registration_first_name">First Name</string>
+    <string name="registration_last_name">Last Name</string>
+    <string name="registration_birthdate">Birthdate</string>
+    <string name="registration_sex">Sex</string>
+    <string name="registration_barangay">Barangay</string>
+    <string name="registration_philhealth">PhilHealth Number (Optional)</string>
+    <string name="registration_philsys">PhilSys Number (Optional)</string>
+    <string name="registration_is_pregnant">Is Pregnant?</string>
+    <string name="registration_gestational_age">Gestational Age (weeks)</string>
+    <string name="registration_messenger_optin">Send results via Messenger?</string>
+    <string name="registration_submit">Register Patient</string>
+
+    <!-- Scan Screen -->
+    <string name="scan_title">Health Scan</string>
+    <string name="scan_instructions">Position face in frame and hold still</string>
+    <string name="scan_start">Start Scan</string>
+    <string name="scan_scanning">Scanning…</string>
+    <string name="scan_complete">Scan Complete</string>
+    <string name="scan_quality_good">Good signal quality</string>
+    <string name="scan_quality_poor">Poor signal - adjust lighting</string>
+
+    <!-- Common -->
+    <string name="continue_button">Continue</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="unknown">Unknown</string>
+    <string name="loading">Loading…</string>
+    <string name="error_occurred">An error occurred</string>
+    <string name="retry">Retry</string>
+
+    <!-- Sync -->
+    <string name="sync_syncing">Syncing…</string>
+    <string name="sync_success">Sync successful</string>
+    <string name="sync_failed">Sync failed</string>
+    <string name="sync_pending">%d pending</string>
+
+    <!-- Permissions -->
+    <string name="permission_camera_rationale">Camera access is required to perform health scans</string>
+    <string name="permission_microphone_rationale">Microphone access is required for voice input</string>
+</resources>

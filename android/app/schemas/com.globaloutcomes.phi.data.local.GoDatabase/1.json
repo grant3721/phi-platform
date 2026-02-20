@@ -1,0 +1,1960 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "1747bf782a3fa9106b110952c741c427",
+    "entities": [
+      {
+        "tableName": "patients",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `phoneNumber` TEXT NOT NULL, `firstName` TEXT NOT NULL, `lastName` TEXT NOT NULL, `birthdate` INTEGER NOT NULL, `sex` TEXT NOT NULL, `barangayId` TEXT NOT NULL, `philHealthNumber` TEXT, `philSysNumber` TEXT, `isPregnant` INTEGER NOT NULL, `gestationalAgeWeeks` INTEGER, `lastMenstrualPeriod` INTEGER, `messengerOptIn` INTEGER NOT NULL, `messengerUserId` TEXT, `messengerName` TEXT, `highRiskFlag` INTEGER NOT NULL, `highRiskReasons` TEXT, `maternalHighRisk` INTEGER NOT NULL, `lastRiskAssessment` INTEGER, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `syncStatus` TEXT NOT NULL, `syncedAt` INTEGER, `serverPatientId` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "phoneNumber",
+            "columnName": "phoneNumber",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstName",
+            "columnName": "firstName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastName",
+            "columnName": "lastName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "birthdate",
+            "columnName": "birthdate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sex",
+            "columnName": "sex",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "barangayId",
+            "columnName": "barangayId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "philHealthNumber",
+            "columnName": "philHealthNumber",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "philSysNumber",
+            "columnName": "philSysNumber",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isPregnant",
+            "columnName": "isPregnant",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gestationalAgeWeeks",
+            "columnName": "gestationalAgeWeeks",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastMenstrualPeriod",
+            "columnName": "lastMenstrualPeriod",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "messengerOptIn",
+            "columnName": "messengerOptIn",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "messengerUserId",
+            "columnName": "messengerUserId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "messengerName",
+            "columnName": "messengerName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "highRiskFlag",
+            "columnName": "highRiskFlag",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "highRiskReasons",
+            "columnName": "highRiskReasons",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "maternalHighRisk",
+            "columnName": "maternalHighRisk",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastRiskAssessment",
+            "columnName": "lastRiskAssessment",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "syncStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncedAt",
+            "columnName": "syncedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "serverPatientId",
+            "columnName": "serverPatientId",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_patients_phoneNumber",
+            "unique": true,
+            "columnNames": [
+              "phoneNumber"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_patients_phoneNumber` ON `${TABLE_NAME}` (`phoneNumber`)"
+          },
+          {
+            "name": "index_patients_barangayId",
+            "unique": false,
+            "columnNames": [
+              "barangayId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_patients_barangayId` ON `${TABLE_NAME}` (`barangayId`)"
+          },
+          {
+            "name": "index_patients_highRiskFlag",
+            "unique": false,
+            "columnNames": [
+              "highRiskFlag"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_patients_highRiskFlag` ON `${TABLE_NAME}` (`highRiskFlag`)"
+          },
+          {
+            "name": "index_patients_syncStatus",
+            "unique": false,
+            "columnNames": [
+              "syncStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_patients_syncStatus` ON `${TABLE_NAME}` (`syncStatus`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "scans",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `patientId` TEXT NOT NULL, `scannedAt` INTEGER NOT NULL, `scanDurationSeconds` INTEGER NOT NULL, `systolicBp` REAL, `diastolicBp` REAL, `heartRate` REAL, `heartRateVariability` REAL, `cardiacOutput` REAL, `strokeVolume` REAL, `respiratoryRate` REAL, `spo2` REAL, `perfusionIndex` REAL, `bloodGlucose` REAL, `hba1c` REAL, `cholesterol` REAL, `triglycerides` REAL, `hemoglobin` REAL, `hematocrit` REAL, `bun` REAL, `creatinine` REAL, `arterialStiffness` REAL, `vascularAge` REAL, `peripheralResistance` REAL, `meanArterialPressure` REAL, `sympatheticTone` REAL, `parasympatheticTone` REAL, `stressIndex` REAL, `bmi` REAL, `bodyFatPercentage` REAL, `visceralFatLevel` REAL, `leftVentricularEjectionFraction` REAL, `systolicTimeIntervals` REAL, `diastolicFunction` REAL, `qrsDuration` REAL, `lungCapacity` REAL, `respiratoryEfficiency` REAL, `oxygenSaturationVariability` REAL, `riskScore` REAL NOT NULL, `riskLevel` TEXT NOT NULL, `highRiskFlags` TEXT, `signalQuality` TEXT NOT NULL, `qualityScore` REAL NOT NULL, `rejectionReason` TEXT, `biomarkersFull` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `syncStatus` TEXT NOT NULL, `syncedAt` INTEGER, `serverScanId` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`patientId`) REFERENCES `patients`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patientId",
+            "columnName": "patientId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scannedAt",
+            "columnName": "scannedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scanDurationSeconds",
+            "columnName": "scanDurationSeconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "systolicBp",
+            "columnName": "systolicBp",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "diastolicBp",
+            "columnName": "diastolicBp",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "heartRate",
+            "columnName": "heartRate",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "heartRateVariability",
+            "columnName": "heartRateVariability",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cardiacOutput",
+            "columnName": "cardiacOutput",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "strokeVolume",
+            "columnName": "strokeVolume",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "respiratoryRate",
+            "columnName": "respiratoryRate",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "spo2",
+            "columnName": "spo2",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "perfusionIndex",
+            "columnName": "perfusionIndex",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bloodGlucose",
+            "columnName": "bloodGlucose",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hba1c",
+            "columnName": "hba1c",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cholesterol",
+            "columnName": "cholesterol",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "triglycerides",
+            "columnName": "triglycerides",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hemoglobin",
+            "columnName": "hemoglobin",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hematocrit",
+            "columnName": "hematocrit",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bun",
+            "columnName": "bun",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "creatinine",
+            "columnName": "creatinine",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "arterialStiffness",
+            "columnName": "arterialStiffness",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vascularAge",
+            "columnName": "vascularAge",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "peripheralResistance",
+            "columnName": "peripheralResistance",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "meanArterialPressure",
+            "columnName": "meanArterialPressure",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sympatheticTone",
+            "columnName": "sympatheticTone",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "parasympatheticTone",
+            "columnName": "parasympatheticTone",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stressIndex",
+            "columnName": "stressIndex",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bmi",
+            "columnName": "bmi",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bodyFatPercentage",
+            "columnName": "bodyFatPercentage",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "visceralFatLevel",
+            "columnName": "visceralFatLevel",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "leftVentricularEjectionFraction",
+            "columnName": "leftVentricularEjectionFraction",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "systolicTimeIntervals",
+            "columnName": "systolicTimeIntervals",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "diastolicFunction",
+            "columnName": "diastolicFunction",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "qrsDuration",
+            "columnName": "qrsDuration",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lungCapacity",
+            "columnName": "lungCapacity",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "respiratoryEfficiency",
+            "columnName": "respiratoryEfficiency",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "oxygenSaturationVariability",
+            "columnName": "oxygenSaturationVariability",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "riskScore",
+            "columnName": "riskScore",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "riskLevel",
+            "columnName": "riskLevel",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "highRiskFlags",
+            "columnName": "highRiskFlags",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "signalQuality",
+            "columnName": "signalQuality",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "qualityScore",
+            "columnName": "qualityScore",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rejectionReason",
+            "columnName": "rejectionReason",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "biomarkersFull",
+            "columnName": "biomarkersFull",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "syncStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncedAt",
+            "columnName": "syncedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "serverScanId",
+            "columnName": "serverScanId",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_scans_patientId",
+            "unique": false,
+            "columnNames": [
+              "patientId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_scans_patientId` ON `${TABLE_NAME}` (`patientId`)"
+          },
+          {
+            "name": "index_scans_scannedAt",
+            "unique": false,
+            "columnNames": [
+              "scannedAt"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_scans_scannedAt` ON `${TABLE_NAME}` (`scannedAt`)"
+          },
+          {
+            "name": "index_scans_riskScore",
+            "unique": false,
+            "columnNames": [
+              "riskScore"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_scans_riskScore` ON `${TABLE_NAME}` (`riskScore`)"
+          },
+          {
+            "name": "index_scans_syncStatus",
+            "unique": false,
+            "columnNames": [
+              "syncStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_scans_syncStatus` ON `${TABLE_NAME}` (`syncStatus`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "patients",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "patientId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "surveys",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `patientId` TEXT NOT NULL, `scanId` TEXT, `surveyType` TEXT NOT NULL, `responses` TEXT NOT NULL, `completedAt` INTEGER NOT NULL, `durationSeconds` INTEGER NOT NULL, `isComplete` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `syncStatus` TEXT NOT NULL, `syncedAt` INTEGER, `serverSurveyId` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`patientId`) REFERENCES `patients`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`scanId`) REFERENCES `scans`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patientId",
+            "columnName": "patientId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scanId",
+            "columnName": "scanId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "surveyType",
+            "columnName": "surveyType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "responses",
+            "columnName": "responses",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completedAt",
+            "columnName": "completedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationSeconds",
+            "columnName": "durationSeconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isComplete",
+            "columnName": "isComplete",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "syncStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncedAt",
+            "columnName": "syncedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "serverSurveyId",
+            "columnName": "serverSurveyId",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_surveys_patientId",
+            "unique": false,
+            "columnNames": [
+              "patientId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_surveys_patientId` ON `${TABLE_NAME}` (`patientId`)"
+          },
+          {
+            "name": "index_surveys_scanId",
+            "unique": false,
+            "columnNames": [
+              "scanId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_surveys_scanId` ON `${TABLE_NAME}` (`scanId`)"
+          },
+          {
+            "name": "index_surveys_surveyType",
+            "unique": false,
+            "columnNames": [
+              "surveyType"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_surveys_surveyType` ON `${TABLE_NAME}` (`surveyType`)"
+          },
+          {
+            "name": "index_surveys_syncStatus",
+            "unique": false,
+            "columnNames": [
+              "syncStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_surveys_syncStatus` ON `${TABLE_NAME}` (`syncStatus`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "patients",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "patientId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "scans",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "scanId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "referrals",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `patientId` TEXT NOT NULL, `scanId` TEXT NOT NULL, `tier` TEXT NOT NULL, `status` TEXT NOT NULL, `priority` TEXT NOT NULL, `riskLevel` TEXT NOT NULL, `riskFlags` TEXT NOT NULL, `reasonForReferral` TEXT NOT NULL, `referredAt` INTEGER NOT NULL, `dueBy` INTEGER NOT NULL, `confirmedAt` INTEGER, `resolvedAt` INTEGER, `resolutionNotes` TEXT, `outcome` TEXT, `fromFacility` TEXT NOT NULL, `toFacility` TEXT NOT NULL, `referringProvider` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `syncStatus` TEXT NOT NULL, `syncedAt` INTEGER, `serverReferralId` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`patientId`) REFERENCES `patients`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`scanId`) REFERENCES `scans`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patientId",
+            "columnName": "patientId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scanId",
+            "columnName": "scanId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tier",
+            "columnName": "tier",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priority",
+            "columnName": "priority",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "riskLevel",
+            "columnName": "riskLevel",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "riskFlags",
+            "columnName": "riskFlags",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reasonForReferral",
+            "columnName": "reasonForReferral",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "referredAt",
+            "columnName": "referredAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dueBy",
+            "columnName": "dueBy",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "confirmedAt",
+            "columnName": "confirmedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "resolvedAt",
+            "columnName": "resolvedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "resolutionNotes",
+            "columnName": "resolutionNotes",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "outcome",
+            "columnName": "outcome",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fromFacility",
+            "columnName": "fromFacility",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "toFacility",
+            "columnName": "toFacility",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "referringProvider",
+            "columnName": "referringProvider",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "syncStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncedAt",
+            "columnName": "syncedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "serverReferralId",
+            "columnName": "serverReferralId",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_referrals_patientId",
+            "unique": false,
+            "columnNames": [
+              "patientId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_referrals_patientId` ON `${TABLE_NAME}` (`patientId`)"
+          },
+          {
+            "name": "index_referrals_scanId",
+            "unique": false,
+            "columnNames": [
+              "scanId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_referrals_scanId` ON `${TABLE_NAME}` (`scanId`)"
+          },
+          {
+            "name": "index_referrals_tier",
+            "unique": false,
+            "columnNames": [
+              "tier"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_referrals_tier` ON `${TABLE_NAME}` (`tier`)"
+          },
+          {
+            "name": "index_referrals_status",
+            "unique": false,
+            "columnNames": [
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_referrals_status` ON `${TABLE_NAME}` (`status`)"
+          },
+          {
+            "name": "index_referrals_dueBy",
+            "unique": false,
+            "columnNames": [
+              "dueBy"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_referrals_dueBy` ON `${TABLE_NAME}` (`dueBy`)"
+          },
+          {
+            "name": "index_referrals_syncStatus",
+            "unique": false,
+            "columnNames": [
+              "syncStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_referrals_syncStatus` ON `${TABLE_NAME}` (`syncStatus`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "patients",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "patientId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "scans",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "scanId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "clinical_encounters",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `patientId` TEXT NOT NULL, `scanId` TEXT, `encounterDate` INTEGER NOT NULL, `encounterType` TEXT NOT NULL, `facilityType` TEXT NOT NULL, `providerId` TEXT NOT NULL, `providerName` TEXT NOT NULL, `systolicBp` REAL, `diastolicBp` REAL, `heartRate` REAL, `temperature` REAL, `weight` REAL, `height` REAL, `bmi` REAL, `chiefComplaint` TEXT, `historyPresentIllness` TEXT, `pastMedicalHistory` TEXT, `physicalExamFindings` TEXT NOT NULL, `diagnosisIcd10` TEXT NOT NULL, `diagnosisText` TEXT NOT NULL, `diagnosisCertainty` TEXT NOT NULL, `medications` TEXT NOT NULL, `referralToFacility` TEXT, `followUpDate` INTEGER, `followUpInstructions` TEXT, `labResults` TEXT, `fundalHeight` REAL, `fetalHeartRate` REAL, `fetalPresentation` TEXT, `edemaAssessment` TEXT, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `syncStatus` TEXT NOT NULL, `syncedAt` INTEGER, `serverEncounterId` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`patientId`) REFERENCES `patients`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`scanId`) REFERENCES `scans`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patientId",
+            "columnName": "patientId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scanId",
+            "columnName": "scanId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "encounterDate",
+            "columnName": "encounterDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "encounterType",
+            "columnName": "encounterType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "facilityType",
+            "columnName": "facilityType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "providerId",
+            "columnName": "providerId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "providerName",
+            "columnName": "providerName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "systolicBp",
+            "columnName": "systolicBp",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "diastolicBp",
+            "columnName": "diastolicBp",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "heartRate",
+            "columnName": "heartRate",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "temperature",
+            "columnName": "temperature",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "weight",
+            "columnName": "weight",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "height",
+            "columnName": "height",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bmi",
+            "columnName": "bmi",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chiefComplaint",
+            "columnName": "chiefComplaint",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "historyPresentIllness",
+            "columnName": "historyPresentIllness",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pastMedicalHistory",
+            "columnName": "pastMedicalHistory",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "physicalExamFindings",
+            "columnName": "physicalExamFindings",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diagnosisIcd10",
+            "columnName": "diagnosisIcd10",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diagnosisText",
+            "columnName": "diagnosisText",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diagnosisCertainty",
+            "columnName": "diagnosisCertainty",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "medications",
+            "columnName": "medications",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "referralToFacility",
+            "columnName": "referralToFacility",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "followUpDate",
+            "columnName": "followUpDate",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "followUpInstructions",
+            "columnName": "followUpInstructions",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "labResults",
+            "columnName": "labResults",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fundalHeight",
+            "columnName": "fundalHeight",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fetalHeartRate",
+            "columnName": "fetalHeartRate",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fetalPresentation",
+            "columnName": "fetalPresentation",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "edemaAssessment",
+            "columnName": "edemaAssessment",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "syncStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncedAt",
+            "columnName": "syncedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "serverEncounterId",
+            "columnName": "serverEncounterId",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_clinical_encounters_patientId",
+            "unique": false,
+            "columnNames": [
+              "patientId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_clinical_encounters_patientId` ON `${TABLE_NAME}` (`patientId`)"
+          },
+          {
+            "name": "index_clinical_encounters_scanId",
+            "unique": false,
+            "columnNames": [
+              "scanId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_clinical_encounters_scanId` ON `${TABLE_NAME}` (`scanId`)"
+          },
+          {
+            "name": "index_clinical_encounters_encounterDate",
+            "unique": false,
+            "columnNames": [
+              "encounterDate"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_clinical_encounters_encounterDate` ON `${TABLE_NAME}` (`encounterDate`)"
+          },
+          {
+            "name": "index_clinical_encounters_facilityType",
+            "unique": false,
+            "columnNames": [
+              "facilityType"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_clinical_encounters_facilityType` ON `${TABLE_NAME}` (`facilityType`)"
+          },
+          {
+            "name": "index_clinical_encounters_syncStatus",
+            "unique": false,
+            "columnNames": [
+              "syncStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_clinical_encounters_syncStatus` ON `${TABLE_NAME}` (`syncStatus`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "patients",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "patientId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "scans",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "scanId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "yakap_claims",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `patientId` TEXT NOT NULL, `encounterId` TEXT NOT NULL, `claimType` TEXT NOT NULL, `claimAmount` REAL NOT NULL, `claimStatus` TEXT NOT NULL, `philHealthNumber` TEXT NOT NULL, `philHealthMemberType` TEXT NOT NULL, `encounterDate` INTEGER NOT NULL, `diagnosisIcd10` TEXT NOT NULL, `diagnosisText` TEXT NOT NULL, `facilityCode` TEXT NOT NULL, `providerId` TEXT NOT NULL, `isValid` INTEGER NOT NULL, `validationErrors` TEXT, `requiredDocuments` TEXT NOT NULL, `submittedAt` INTEGER, `submittedBy` TEXT, `claimReference` TEXT, `processedAt` INTEGER, `approvedAmount` REAL, `rejectionReason` TEXT, `paidAt` INTEGER, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `syncStatus` TEXT NOT NULL, `syncedAt` INTEGER, `serverClaimId` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`patientId`) REFERENCES `patients`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`encounterId`) REFERENCES `clinical_encounters`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patientId",
+            "columnName": "patientId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "encounterId",
+            "columnName": "encounterId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "claimType",
+            "columnName": "claimType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "claimAmount",
+            "columnName": "claimAmount",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "claimStatus",
+            "columnName": "claimStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "philHealthNumber",
+            "columnName": "philHealthNumber",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "philHealthMemberType",
+            "columnName": "philHealthMemberType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "encounterDate",
+            "columnName": "encounterDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diagnosisIcd10",
+            "columnName": "diagnosisIcd10",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diagnosisText",
+            "columnName": "diagnosisText",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "facilityCode",
+            "columnName": "facilityCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "providerId",
+            "columnName": "providerId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isValid",
+            "columnName": "isValid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "validationErrors",
+            "columnName": "validationErrors",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "requiredDocuments",
+            "columnName": "requiredDocuments",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "submittedAt",
+            "columnName": "submittedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "submittedBy",
+            "columnName": "submittedBy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "claimReference",
+            "columnName": "claimReference",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "processedAt",
+            "columnName": "processedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "approvedAmount",
+            "columnName": "approvedAmount",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rejectionReason",
+            "columnName": "rejectionReason",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "paidAt",
+            "columnName": "paidAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "syncStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncedAt",
+            "columnName": "syncedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "serverClaimId",
+            "columnName": "serverClaimId",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_yakap_claims_patientId",
+            "unique": false,
+            "columnNames": [
+              "patientId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_yakap_claims_patientId` ON `${TABLE_NAME}` (`patientId`)"
+          },
+          {
+            "name": "index_yakap_claims_encounterId",
+            "unique": false,
+            "columnNames": [
+              "encounterId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_yakap_claims_encounterId` ON `${TABLE_NAME}` (`encounterId`)"
+          },
+          {
+            "name": "index_yakap_claims_claimStatus",
+            "unique": false,
+            "columnNames": [
+              "claimStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_yakap_claims_claimStatus` ON `${TABLE_NAME}` (`claimStatus`)"
+          },
+          {
+            "name": "index_yakap_claims_claimType",
+            "unique": false,
+            "columnNames": [
+              "claimType"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_yakap_claims_claimType` ON `${TABLE_NAME}` (`claimType`)"
+          },
+          {
+            "name": "index_yakap_claims_syncStatus",
+            "unique": false,
+            "columnNames": [
+              "syncStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_yakap_claims_syncStatus` ON `${TABLE_NAME}` (`syncStatus`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "patients",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "patientId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "clinical_encounters",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "encounterId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "bhw_incentives",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `bhwId` TEXT NOT NULL, `scanId` TEXT NOT NULL, `patientId` TEXT NOT NULL, `amount` REAL NOT NULL, `earnedDate` INTEGER NOT NULL, `earnedAt` INTEGER NOT NULL, `status` TEXT NOT NULL, `rejectionReason` TEXT, `daySequence` INTEGER NOT NULL, `dailyTotal` REAL NOT NULL, `paidAt` INTEGER, `paymentBatch` TEXT, `paymentReference` TEXT, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `syncStatus` TEXT NOT NULL, `syncedAt` INTEGER, `serverIncentiveId` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`scanId`) REFERENCES `scans`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bhwId",
+            "columnName": "bhwId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scanId",
+            "columnName": "scanId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patientId",
+            "columnName": "patientId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedDate",
+            "columnName": "earnedDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedAt",
+            "columnName": "earnedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rejectionReason",
+            "columnName": "rejectionReason",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "daySequence",
+            "columnName": "daySequence",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dailyTotal",
+            "columnName": "dailyTotal",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paidAt",
+            "columnName": "paidAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "paymentBatch",
+            "columnName": "paymentBatch",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "paymentReference",
+            "columnName": "paymentReference",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "syncStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncedAt",
+            "columnName": "syncedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "serverIncentiveId",
+            "columnName": "serverIncentiveId",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_bhw_incentives_bhwId",
+            "unique": false,
+            "columnNames": [
+              "bhwId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_bhw_incentives_bhwId` ON `${TABLE_NAME}` (`bhwId`)"
+          },
+          {
+            "name": "index_bhw_incentives_scanId",
+            "unique": false,
+            "columnNames": [
+              "scanId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_bhw_incentives_scanId` ON `${TABLE_NAME}` (`scanId`)"
+          },
+          {
+            "name": "index_bhw_incentives_earnedDate",
+            "unique": false,
+            "columnNames": [
+              "earnedDate"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_bhw_incentives_earnedDate` ON `${TABLE_NAME}` (`earnedDate`)"
+          },
+          {
+            "name": "index_bhw_incentives_status",
+            "unique": false,
+            "columnNames": [
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_bhw_incentives_status` ON `${TABLE_NAME}` (`status`)"
+          },
+          {
+            "name": "index_bhw_incentives_syncStatus",
+            "unique": false,
+            "columnNames": [
+              "syncStatus"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_bhw_incentives_syncStatus` ON `${TABLE_NAME}` (`syncStatus`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "scans",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "scanId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "config_thresholds",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `thresholdType` TEXT NOT NULL, `parameterName` TEXT NOT NULL, `lowThreshold` REAL, `highThreshold` REAL NOT NULL, `criticalThreshold` REAL, `unit` TEXT NOT NULL, `description` TEXT NOT NULL, `category` TEXT NOT NULL, `active` INTEGER NOT NULL, `clinicalGuideline` TEXT, `recommendedAction` TEXT, `ageSpecific` INTEGER NOT NULL, `ageAdjustments` TEXT, `sexSpecific` INTEGER NOT NULL, `sexAdjustments` TEXT, `updatedAt` INTEGER NOT NULL, `lastSyncedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "thresholdType",
+            "columnName": "thresholdType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "parameterName",
+            "columnName": "parameterName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lowThreshold",
+            "columnName": "lowThreshold",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "highThreshold",
+            "columnName": "highThreshold",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "criticalThreshold",
+            "columnName": "criticalThreshold",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "unit",
+            "columnName": "unit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "active",
+            "columnName": "active",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clinicalGuideline",
+            "columnName": "clinicalGuideline",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "recommendedAction",
+            "columnName": "recommendedAction",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ageSpecific",
+            "columnName": "ageSpecific",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ageAdjustments",
+            "columnName": "ageAdjustments",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sexSpecific",
+            "columnName": "sexSpecific",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sexAdjustments",
+            "columnName": "sexAdjustments",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastSyncedAt",
+            "columnName": "lastSyncedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_config_thresholds_thresholdType",
+            "unique": false,
+            "columnNames": [
+              "thresholdType"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_config_thresholds_thresholdType` ON `${TABLE_NAME}` (`thresholdType`)"
+          },
+          {
+            "name": "index_config_thresholds_parameterName",
+            "unique": false,
+            "columnNames": [
+              "parameterName"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_config_thresholds_parameterName` ON `${TABLE_NAME}` (`parameterName`)"
+          },
+          {
+            "name": "index_config_thresholds_active",
+            "unique": false,
+            "columnNames": [
+              "active"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_config_thresholds_active` ON `${TABLE_NAME}` (`active`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "barangays",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `municipality` TEXT NOT NULL, `province` TEXT NOT NULL, `region` TEXT NOT NULL, `islandGroup` TEXT NOT NULL, `population` INTEGER, `households` INTEGER, `latitude` REAL, `longitude` REAL, `urbanRural` TEXT, `updatedAt` INTEGER NOT NULL, `lastSyncedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "municipality",
+            "columnName": "municipality",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "province",
+            "columnName": "province",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "region",
+            "columnName": "region",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "islandGroup",
+            "columnName": "islandGroup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "population",
+            "columnName": "population",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "households",
+            "columnName": "households",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "urbanRural",
+            "columnName": "urbanRural",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastSyncedAt",
+            "columnName": "lastSyncedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_barangays_municipality",
+            "unique": false,
+            "columnNames": [
+              "municipality"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_barangays_municipality` ON `${TABLE_NAME}` (`municipality`)"
+          },
+          {
+            "name": "index_barangays_province",
+            "unique": false,
+            "columnNames": [
+              "province"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_barangays_province` ON `${TABLE_NAME}` (`province`)"
+          },
+          {
+            "name": "index_barangays_region",
+            "unique": false,
+            "columnNames": [
+              "region"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_barangays_region` ON `${TABLE_NAME}` (`region`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1747bf782a3fa9106b110952c741c427')"
+    ]
+  }
+}

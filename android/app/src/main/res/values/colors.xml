@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Global Outcomes Brand Colors -->
+    <color name="go_green">#00A651</color>
+    <color name="go_green_dark">#008040</color>
+    <color name="go_green_light">#E8F5E9</color>
+
+    <color name="go_red">#E53935</color>
+    <color name="go_red_dark">#C62828</color>
+    <color name="go_red_light">#FFEBEE</color>
+
+    <color name="go_amber">#FFA726</color>
+    <color name="go_amber_dark">#F57C00</color>
+    <color name="go_amber_light">#FFF3E0</color>
+
+    <!-- Material 3 Baseline -->
+    <color name="md_theme_light_primary">#00A651</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#E8F5E9</color>
+    <color name="md_theme_light_onPrimaryContainer">#00210A</color>
+
+    <color name="md_theme_light_error">#E53935</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#FFEBEE</color>
+
+    <color name="md_theme_light_background">#FAFAFA</color>
+    <color name="md_theme_light_onBackground">#1C1B1F</color>
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#1C1B1F</color>
+
+    <!-- Risk Levels -->
+    <color name="risk_normal">#00A651</color>
+    <color name="risk_elevated">#FFA726</color>
+    <color name="risk_high">#E53935</color>
+
+    <!-- Common -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray_50">#FAFAFA</color>
+    <color name="gray_100">#F5F5F5</color>
+    <color name="gray_200">#EEEEEE</color>
+    <color name="gray_700">#616161</color>
+    <color name="gray_900">#212121</color>
+</resources>
