@@ -330,6 +330,11 @@ class SyncManagerTest {
             riskScore = 25f,
             signalQuality = SignalQuality.GOOD,
             qualityScore = 85f,
+            biomarkersFull = mapOf(
+                "systolicBp" to 120f,
+                "diastolicBp" to 80f,
+                "heartRate" to 72f
+            ),
             syncStatus = syncStatus
         )
     }

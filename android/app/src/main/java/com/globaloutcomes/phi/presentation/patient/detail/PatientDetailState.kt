@@ -10,7 +10,7 @@ data class PatientDetailState(
     val scans: List<Scan> = emptyList(),
     val surveys: List<Survey> = emptyList(),
     val referrals: List<Referral> = emptyList(),
-    val selectedTab: Int = 0,
+    val selectedTab: PatientDetailTab = PatientDetailTab.OVERVIEW,
     val isEditMode: Boolean = false,
     val isSaving: Boolean = false,
     val isDeleting: Boolean = false,
@@ -18,3 +18,10 @@ data class PatientDetailState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null
 )
+
+enum class PatientDetailTab {
+    OVERVIEW,
+    SCANS,
+    SURVEYS,
+    REFERRALS
+}

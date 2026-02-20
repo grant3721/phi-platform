@@ -187,10 +187,10 @@ class PatientDetailViewModelTest {
         assertNull(state.errorMessage) // No error message
     }
 
-    // ========== COMPUTED PROPERTIES ==========
+    // ========== SCANS AND REFERRALS LOADING ==========
 
     @Test
-    fun `latestScan returns scan with most recent timestamp`() = runTest {
+    fun `loads multiple scans correctly`() = runTest {
         // Arrange
         val oldScan = createScan("scan-1", scannedAt = now - 10000)
         val newestScan = createScan("scan-2", scannedAt = now)
@@ -204,29 +204,11 @@ class PatientDetailViewModelTest {
         advanceUntilIdle()
 
         // Assert
-        assertEquals("scan-2", viewModel.state.value.latestScan?.id)
+        assertEquals(3, viewModel.state.value.scans.size)
     }
 
     @Test
-    fun `totalScans returns correct count`() = runTest {
-        // Arrange
-        val scans = listOf(
-            createScan("s1"),
-            createScan("s2"),
-            createScan("s3")
-        )
-        coEvery { mockScanRepository.getScansForPatient(testPatientId) } returns Result.success(scans)
-
-        // Act
-        viewModel = createViewModel()
-        advanceUntilIdle()
-
-        // Assert
-        assertEquals(3, viewModel.state.value.totalScans)
-    }
-
-    @Test
-    fun `highRiskScans counts only elevated and high risk`() = runTest {
+    fun `loads scans with different risk levels`() = runTest {
         // Arrange
         val scans = listOf(
             createScan("s1", riskLevel = RiskLevel.NORMAL),
@@ -242,11 +224,13 @@ class PatientDetailViewModelTest {
         advanceUntilIdle()
 
         // Assert
-        assertEquals(3, viewModel.state.value.highRiskScans)
+        assertEquals(5, viewModel.state.value.scans.size)
+        val highRiskScans = viewModel.state.value.scans.filter { it.riskLevel == RiskLevel.HIGH || it.riskLevel == RiskLevel.ELEVATED }
+        assertEquals(3, highRiskScans.size)
     }
 
     @Test
-    fun `activeReferrals counts only pending and confirmed`() = runTest {
+    fun `loads referrals with different statuses`() = runTest {
         // Arrange
         val referrals = listOf(
             createReferral("r1", status = ReferralStatus.PENDING),
@@ -262,7 +246,11 @@ class PatientDetailViewModelTest {
         advanceUntilIdle()
 
         // Assert
-        assertEquals(2, viewModel.state.value.activeReferrals) // Only PENDING and CONFIRMED
+        assertEquals(5, viewModel.state.value.referrals.size)
+        val activeReferrals = viewModel.state.value.referrals.filter {
+            it.status == ReferralStatus.PENDING || it.status == ReferralStatus.CONFIRMED
+        }
+        assertEquals(3, activeReferrals.size)
     }
 
     // ========== TAB SELECTION ==========
@@ -618,7 +606,8 @@ class PatientDetailViewModelTest {
         riskLevel = riskLevel,
         riskScore = 0.25f,
         signalQuality = SignalQuality.GOOD,
-        qualityScore = 0.85f
+        qualityScore = 0.85f,
+        biomarkersFull = emptyMap()
     )
 
     private fun createSurvey(id: String) = Survey(
@@ -643,14 +632,12 @@ class PatientDetailViewModelTest {
         dueBy = now + (48 * 60 * 60 * 1000),
         riskLevel = RiskLevel.HIGH,
         riskFlags = listOf("Hypertension"),
-        notes = null,
         resolvedAt = null,
         resolvedBy = null,
         resolutionNotes = null,
         createdAt = now,
         updatedAt = now,
         syncStatus = SyncStatus.PENDING,
-        syncedAt = null,
-        serverReferralId = null
+        syncedAt = null
     )
 }

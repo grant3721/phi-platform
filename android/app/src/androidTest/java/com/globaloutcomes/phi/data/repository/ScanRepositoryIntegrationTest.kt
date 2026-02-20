@@ -532,6 +532,7 @@ class ScanRepositoryIntegrationTest {
         signalQuality = signalQuality,
         qualityScore = qualityScore,
         rejectionReason = rejectionReason,
+        biomarkersFull = emptyMap(),
         createdAt = now,
         updatedAt = now,
         syncStatus = syncStatus,

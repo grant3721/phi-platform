@@ -448,7 +448,6 @@ class ReferralRepositoryIntegrationTest {
         dueBy: Long = now + (48 * 60 * 60 * 1000),
         riskLevel: RiskLevel = RiskLevel.HIGH,
         riskFlags: List<String> = listOf("Hypertension"),
-        notes: String? = null,
         resolvedAt: Long? = null,
         resolvedBy: String? = null,
         resolutionNotes: String? = null,
@@ -464,14 +463,12 @@ class ReferralRepositoryIntegrationTest {
         dueBy = dueBy,
         riskLevel = riskLevel,
         riskFlags = riskFlags,
-        notes = notes,
         resolvedAt = resolvedAt,
         resolvedBy = resolvedBy,
         resolutionNotes = resolutionNotes,
         createdAt = now,
         updatedAt = now,
         syncStatus = syncStatus,
-        syncedAt = syncedAt,
-        serverReferralId = null
+        syncedAt = syncedAt
     )
 }

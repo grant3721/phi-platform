@@ -45,8 +45,7 @@ class UpdateReferralUseCase @Inject constructor(
      * Escalates referral to next tier (BHS → RHU)
      */
     suspend fun escalateToRhu(
-        referralId: String,
-        notes: String
+        referralId: String
     ): Result<Unit> {
         return try {
             val referral = referralRepository.getReferralById(referralId).getOrNull()
@@ -63,7 +62,6 @@ class UpdateReferralUseCase @Inject constructor(
                 tier = ReferralTier.BHS_TO_RHU,
                 status = ReferralStatus.CONFIRMED, // Confirmed for escalation
                 dueBy = dueBy,
-                resolutionNotes = notes,
                 updatedAt = currentTime
             )
 

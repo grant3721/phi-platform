@@ -140,7 +140,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `progress percentage calculated correctly`() = runTest {
+    fun `scans today calculated correctly for halfway progress`() = runTest {
         // Arrange
         val capResult = DailyCapResult(
             scansToday = 25,
@@ -157,11 +157,12 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         // Assert
-        assertEquals(0.5f, viewModel.state.value.progressPercentage)
+        assertEquals(25, viewModel.state.value.scansToday)
+        assertEquals(25, viewModel.state.value.remainingScans)
     }
 
     @Test
-    fun `progress percentage is 1f when at cap`() = runTest {
+    fun `daily cap reached when at max scans`() = runTest {
         // Arrange
         val capResult = DailyCapResult(
             scansToday = 50,
@@ -178,7 +179,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         // Assert
-        assertEquals(1f, viewModel.state.value.progressPercentage)
+        assertTrue(viewModel.state.value.dailyCapReached)
     }
 
     // ========== PATIENT STATISTICS ==========
@@ -366,9 +367,6 @@ class HomeViewModelTest {
         // Act
         viewModel.onEvent(HomeEvent.NavigateToNewScan)
         viewModel.onEvent(HomeEvent.NavigateToPatients)
-        viewModel.onEvent(HomeEvent.NavigateToReferrals)
-        viewModel.onEvent(HomeEvent.NavigateToSettings)
-        viewModel.onEvent(HomeEvent.NavigateToPatientDetail("patient-123"))
 
         // Assert - state should be unchanged
         assertEquals(stateBefore, viewModel.state.value)

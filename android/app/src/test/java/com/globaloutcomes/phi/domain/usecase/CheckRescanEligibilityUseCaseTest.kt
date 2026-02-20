@@ -17,8 +17,8 @@ import kotlin.test.assertTrue
 class CheckRescanEligibilityUseCaseTest {
 
     private lateinit var useCase: CheckRescanEligibilityUseCase
-    private lateinit var mockPatientRepository: PatientRepository
     private lateinit var mockScanRepository: ScanRepository
+    private lateinit var mockPatientRepository: PatientRepository
 
     private val now = System.currentTimeMillis()
     private val oneDayAgo = now - (1 * 24 * 60 * 60 * 1000L)
@@ -29,9 +29,9 @@ class CheckRescanEligibilityUseCaseTest {
 
     @Before
     fun setup() {
-        mockPatientRepository = mockk()
         mockScanRepository = mockk()
-        useCase = CheckRescanEligibilityUseCase(mockScanRepository, mockPatientRepository)
+        mockPatientRepository = mockk()
+        useCase = CheckRescanEligibilityUseCase(mockScanRepository)
     }
 
     @After
@@ -45,16 +45,17 @@ class CheckRescanEligibilityUseCaseTest {
     fun `new patient with no scans is eligible for baseline scan`() = runTest {
         // Arrange
         val patientId = "patient-123"
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(emptyList())
+        val patient = createPatient(patientId)
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(null)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
         val eligibility = result.getOrNull()!!
         assertTrue(eligibility.isEligible)
-        assertEquals("ALLOWED_BASELINE", eligibility.reason)
+        assertEquals(EligibilityReason.BASELINE, eligibility.reason)
     }
 
     // ========== HIGH-RISK RESCANS ==========
@@ -66,17 +67,16 @@ class CheckRescanEligibilityUseCaseTest {
         val patient = createPatient(patientId, highRiskFlag = true)
         val lastScan = createScan(scannedAt = oneDayAgo, riskLevel = RiskLevel.HIGH)
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(listOf(lastScan))
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(lastScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
         val eligibility = result.getOrNull()!!
         assertTrue(eligibility.isEligible)
-        assertEquals("ALLOWED_HIGH_RISK", eligibility.reason)
+        assertEquals(EligibilityReason.HIGH_RISK, eligibility.reason)
     }
 
     @Test
@@ -86,17 +86,16 @@ class CheckRescanEligibilityUseCaseTest {
         val patient = createPatient(patientId, highRiskFlag = true)
         val lastScan = createScan(scannedAt = oneDayAgo, riskLevel = RiskLevel.ELEVATED)
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(listOf(lastScan))
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(lastScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
         val eligibility = result.getOrNull()!!
         assertTrue(eligibility.isEligible)
-        assertEquals("ALLOWED_HIGH_RISK", eligibility.reason)
+        assertEquals(EligibilityReason.HIGH_RISK, eligibility.reason)
     }
 
     // ========== MATERNAL HIGH-RISK RESCANS ==========
@@ -113,17 +112,16 @@ class CheckRescanEligibilityUseCaseTest {
         )
         val lastScan = createScan(scannedAt = oneDayAgo)
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(listOf(lastScan))
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(lastScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
         val eligibility = result.getOrNull()!!
         assertTrue(eligibility.isEligible)
-        assertEquals("ALLOWED_MATERNAL_HIGH_RISK", eligibility.reason)
+        assertEquals(EligibilityReason.MATERNAL_HIGH_RISK, eligibility.reason)
     }
 
     // ========== MATERNAL RESCANS (6 MONTHS) ==========
@@ -135,17 +133,16 @@ class CheckRescanEligibilityUseCaseTest {
         val patient = createPatient(patientId, isPregnant = true)
         val lastScan = createScan(scannedAt = sixMonthsAgo)
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(listOf(lastScan))
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(lastScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
         val eligibility = result.getOrNull()!!
         assertTrue(eligibility.isEligible)
-        assertEquals("ALLOWED_MATERNAL", eligibility.reason)
+        assertEquals(EligibilityReason.MATERNAL, eligibility.reason)
     }
 
     @Test
@@ -155,17 +152,16 @@ class CheckRescanEligibilityUseCaseTest {
         val patient = createPatient(patientId, isPregnant = true, highRiskFlag = false, maternalHighRisk = false)
         val lastScan = createScan(scannedAt = oneMonthAgo) // Only 1 month ago
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(listOf(lastScan))
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(lastScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
         val eligibility = result.getOrNull()!!
         assertFalse(eligibility.isEligible)
-        assertEquals("REJECTED", eligibility.reason)
+        assertEquals(EligibilityReason.MATERNAL_TOO_SOON, eligibility.reason)
         assertTrue(eligibility.daysUntilEligible!! > 0)
     }
 
@@ -178,17 +174,16 @@ class CheckRescanEligibilityUseCaseTest {
         val patient = createPatient(patientId, highRiskFlag = false)
         val lastScan = createScan(scannedAt = oneYearAgo, riskLevel = RiskLevel.NORMAL)
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(listOf(lastScan))
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(lastScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
         val eligibility = result.getOrNull()!!
         assertTrue(eligibility.isEligible)
-        assertEquals("ALLOWED_ANNUAL", eligibility.reason)
+        assertEquals(EligibilityReason.ANNUAL, eligibility.reason)
     }
 
     @Test
@@ -198,17 +193,16 @@ class CheckRescanEligibilityUseCaseTest {
         val patient = createPatient(patientId, highRiskFlag = false)
         val lastScan = createScan(scannedAt = sixMonthsAgo, riskLevel = RiskLevel.NORMAL) // Only 6 months ago
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(listOf(lastScan))
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(lastScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
         val eligibility = result.getOrNull()!!
         assertFalse(eligibility.isEligible)
-        assertEquals("REJECTED", eligibility.reason)
+        assertEquals(EligibilityReason.TOO_SOON, eligibility.reason)
         assertTrue(eligibility.daysUntilEligible!! > 0)
     }
 
@@ -221,11 +215,10 @@ class CheckRescanEligibilityUseCaseTest {
         val patient = createPatient(patientId, highRiskFlag = false)
         val lastScan = createScan(scannedAt = sixMonthsAgo, riskLevel = RiskLevel.NORMAL)
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(listOf(lastScan))
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(lastScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
@@ -248,19 +241,16 @@ class CheckRescanEligibilityUseCaseTest {
         val oldScan = createScan(scannedAt = oneYearAgo) // Old enough
         val recentScan = createScan(scannedAt = oneDayAgo) // Too recent
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(
-            listOf(oldScan, recentScan) // Order shouldn't matter
-        )
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(recentScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
         val eligibility = result.getOrNull()!!
         assertFalse(eligibility.isEligible) // Should use recent scan
-        assertEquals("REJECTED", eligibility.reason)
+        assertEquals(EligibilityReason.TOO_SOON, eligibility.reason)
     }
 
     // ========== EDGE CASES ==========
@@ -269,10 +259,11 @@ class CheckRescanEligibilityUseCaseTest {
     fun `patient not found returns failure`() = runTest {
         // Arrange
         val patientId = "nonexistent-patient"
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(emptyList())
+        val patient = createPatient(patientId)
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(null)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert - New patient with no scans is eligible for baseline
         assertTrue(result.isSuccess)
@@ -283,11 +274,12 @@ class CheckRescanEligibilityUseCaseTest {
     fun `repository failure returns failure`() = runTest {
         // Arrange
         val patientId = "patient-123"
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns
+        val patient = createPatient(patientId)
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns
             Result.failure(Exception("Database error"))
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isFailure)
@@ -302,11 +294,10 @@ class CheckRescanEligibilityUseCaseTest {
         val exactlyOneYearAgo = now - (365 * 24 * 60 * 60 * 1000L)
         val lastScan = createScan(scannedAt = exactlyOneYearAgo, riskLevel = RiskLevel.NORMAL)
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(listOf(lastScan))
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(lastScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
@@ -322,11 +313,10 @@ class CheckRescanEligibilityUseCaseTest {
         val exactlySixMonthsAgo = now - (180 * 24 * 60 * 60 * 1000L)
         val lastScan = createScan(scannedAt = exactlySixMonthsAgo)
 
-        coEvery { mockPatientRepository.getPatientById(patientId) } returns Result.success(patient)
-        coEvery { mockScanRepository.getScansForPatient(patientId) } returns Result.success(listOf(lastScan))
+        coEvery { mockScanRepository.getLatestScanForPatient(patientId) } returns Result.success(lastScan)
 
         // Act
-        val result = useCase(patientId)
+        val result = useCase(patient)
 
         // Assert
         assertTrue(result.isSuccess)
@@ -368,6 +358,7 @@ class CheckRescanEligibilityUseCaseTest {
         riskLevel = riskLevel,
         riskScore = if (riskLevel == RiskLevel.HIGH) 85f else 25f,
         signalQuality = SignalQuality.GOOD,
-        qualityScore = 85f
+        qualityScore = 85f,
+        biomarkersFull = emptyMap()
     )
 }

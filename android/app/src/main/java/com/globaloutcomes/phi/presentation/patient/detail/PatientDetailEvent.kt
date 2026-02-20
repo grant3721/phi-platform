@@ -1,7 +1,7 @@
 package com.globaloutcomes.phi.presentation.patient.detail
 
 sealed class PatientDetailEvent {
-    data class SelectTab(val tab: Int) : PatientDetailEvent()
+    data class SelectTab(val tab: PatientDetailTab) : PatientDetailEvent()
     object ToggleEditMode : PatientDetailEvent()
     object SaveChanges : PatientDetailEvent()
     object CancelEdit : PatientDetailEvent()

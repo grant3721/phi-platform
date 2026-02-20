@@ -45,13 +45,12 @@ class UpdateReferralUseCaseTest {
         coEvery { mockReferralRepository.updateReferral(capture(updatedSlot)) } returns Result.success(Unit)
 
         // Act
-        val result = useCase.updateStatus(testReferralId, ReferralStatus.CONFIRMED, notes = "Patient contacted")
+        val result = useCase.updateStatus(testReferralId, ReferralStatus.CONFIRMED)
 
         // Assert
         assertTrue(result.isSuccess)
         val updated = updatedSlot.captured
         assertEquals(ReferralStatus.CONFIRMED, updated.status)
-        assertEquals("Patient contacted", updated.notes)
     }
 
     @Test
@@ -65,7 +64,7 @@ class UpdateReferralUseCaseTest {
         coEvery { mockReferralRepository.updateReferral(capture(updatedSlot)) } returns Result.success(Unit)
 
         // Act
-        useCase.updateStatus(testReferralId, ReferralStatus.RESOLVED, notes = "Resolved at BHS")
+        useCase.updateStatus(testReferralId, ReferralStatus.RESOLVED)
 
         val afterTime = System.currentTimeMillis()
 
@@ -77,23 +76,20 @@ class UpdateReferralUseCaseTest {
     }
 
     @Test
-    fun `updateStatus preserves existing notes when not provided`() = runTest {
+    fun `updateStatus updates status correctly`() = runTest {
         // Arrange
-        val existingReferral = createReferral(
-            status = ReferralStatus.PENDING,
-            notes = "Original notes"
-        )
+        val existingReferral = createReferral(status = ReferralStatus.PENDING)
         val updatedSlot = slot<Referral>()
 
         coEvery { mockReferralRepository.getReferralById(testReferralId) } returns Result.success(existingReferral)
         coEvery { mockReferralRepository.updateReferral(capture(updatedSlot)) } returns Result.success(Unit)
 
         // Act
-        useCase.updateStatus(testReferralId, ReferralStatus.CONFIRMED, notes = null)
+        useCase.updateStatus(testReferralId, ReferralStatus.CONFIRMED)
 
         // Assert
         val updated = updatedSlot.captured
-        assertEquals("Original notes", updated.notes)
+        assertEquals(ReferralStatus.CONFIRMED, updated.status)
     }
 
     @Test
@@ -129,14 +125,13 @@ class UpdateReferralUseCaseTest {
         coEvery { mockReferralRepository.updateReferral(capture(updatedSlot)) } returns Result.success(Unit)
 
         // Act
-        val result = useCase.escalateToRhu(testReferralId, notes = "Escalating to RHU")
+        val result = useCase.escalateToRhu(testReferralId)
 
         // Assert
         assertTrue(result.isSuccess)
         val updated = updatedSlot.captured
         assertEquals(ReferralTier.BHS_TO_RHU, updated.tier)
         assertEquals(ReferralStatus.CONFIRMED, updated.status)
-        assertEquals("Escalating to RHU", updated.notes)
     }
 
     @Test
@@ -153,7 +148,7 @@ class UpdateReferralUseCaseTest {
         coEvery { mockReferralRepository.updateReferral(capture(updatedSlot)) } returns Result.success(Unit)
 
         // Act
-        useCase.escalateToRhu(testReferralId, notes = "Escalating")
+        useCase.escalateToRhu(testReferralId)
 
         val afterTime = System.currentTimeMillis()
 
@@ -172,7 +167,7 @@ class UpdateReferralUseCaseTest {
         coEvery { mockReferralRepository.getReferralById(testReferralId) } returns Result.success(existingReferral)
 
         // Act
-        val result = useCase.escalateToRhu(testReferralId, notes = "Trying to escalate")
+        val result = useCase.escalateToRhu(testReferralId)
 
         // Assert
         assertTrue(result.isFailure)
@@ -190,7 +185,7 @@ class UpdateReferralUseCaseTest {
         coEvery { mockReferralRepository.getReferralById(testReferralId) } returns Result.success(existingReferral)
 
         // Act
-        val result = useCase.escalateToRhu(testReferralId, notes = "Trying to escalate")
+        val result = useCase.escalateToRhu(testReferralId)
 
         // Assert
         assertTrue(result.isFailure)
@@ -295,7 +290,7 @@ class UpdateReferralUseCaseTest {
             Result.success(null)
 
         // Act
-        val result = useCase.escalateToRhu(testReferralId, "Notes")
+        val result = useCase.escalateToRhu(testReferralId)
 
         // Assert
         assertTrue(result.isFailure)
@@ -343,7 +338,7 @@ class UpdateReferralUseCaseTest {
             Result.failure(Exception("Update failed"))
 
         // Act
-        val result = useCase.escalateToRhu(testReferralId, "Notes")
+        val result = useCase.escalateToRhu(testReferralId)
 
         // Assert
         assertTrue(result.isFailure)
@@ -376,7 +371,6 @@ class UpdateReferralUseCaseTest {
         dueBy: Long = now + (48 * 60 * 60 * 1000),
         riskLevel: RiskLevel = RiskLevel.HIGH,
         riskFlags: List<String> = listOf("Hypertension"),
-        notes: String? = null,
         resolvedAt: Long? = null,
         resolvedBy: String? = null,
         resolutionNotes: String? = null,
@@ -392,14 +386,12 @@ class UpdateReferralUseCaseTest {
         dueBy = dueBy,
         riskLevel = riskLevel,
         riskFlags = riskFlags,
-        notes = notes,
         resolvedAt = resolvedAt,
         resolvedBy = resolvedBy,
         resolutionNotes = resolutionNotes,
         createdAt = createdAt,
         updatedAt = updatedAt,
         syncStatus = SyncStatus.PENDING,
-        syncedAt = null,
-        serverReferralId = null
+        syncedAt = null
     )
 }

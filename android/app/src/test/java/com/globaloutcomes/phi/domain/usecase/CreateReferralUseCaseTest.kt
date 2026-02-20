@@ -236,7 +236,7 @@ class CreateReferralUseCaseTest {
     }
 
     @Test
-    fun `referral has null notes and resolution fields initially`() = runTest {
+    fun `referral has null resolution fields initially`() = runTest {
         // Arrange
         val referralSlot = slot<Referral>()
         coEvery { mockReferralRepository.insertReferral(capture(referralSlot)) } returns Result.success("referral-id")
@@ -247,7 +247,6 @@ class CreateReferralUseCaseTest {
 
         // Assert
         val referral = referralSlot.captured
-        assertEquals(null, referral.notes)
         assertEquals(null, referral.resolvedAt)
         assertEquals(null, referral.resolvedBy)
         assertEquals(null, referral.resolutionNotes)
@@ -322,6 +321,5 @@ class CreateReferralUseCaseTest {
         val referral = referralSlot.captured
         assertEquals(SyncStatus.PENDING, referral.syncStatus)
         assertEquals(null, referral.syncedAt)
-        assertEquals(null, referral.serverReferralId)
     }
 }

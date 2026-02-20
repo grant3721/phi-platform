@@ -511,6 +511,7 @@ class ScanDetailViewModelTest {
         riskScore = riskScore,
         highRiskFlags = highRiskFlags,
         signalQuality = signalQuality,
-        qualityScore = qualityScore
+        qualityScore = qualityScore,
+        biomarkersFull = emptyMap()
     )
 }
