@@ -11,6 +11,7 @@ from typing import Dict, List, Any
 
 from shared.db import get_db_pool
 from shared.auth import require_auth
+from shared.utils import decimal_to_float
 
 logger = logging.getLogger(__name__)
 
@@ -211,6 +212,9 @@ async def main(req: func.HttpRequest) -> func.HttpResponse:
             "top_barangays": top_barangays,
             "trends": trends
         }
+
+        # Convert Decimal objects to float for JSON serialization
+        response = decimal_to_float(response)
 
         logger.info(f"Province analytics complete: {len(province_stats)} provinces")
 

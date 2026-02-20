@@ -384,13 +384,15 @@ private fun ScanProgressSection(
 
 @Composable
 private fun SignalQualityIndicator(quality: String) {
-    val (icon, color) = when (quality) {
-        "Excellent" -> Icons.Default.SignalCellularAlt to Color(0xFF4CAF50)
-        "Good" -> Icons.Default.SignalCellularAlt to Color(0xFF8BC34A)
-        "Fair" -> Icons.Default.SignalCellular4Bar to Color(0xFFFFC107)
-        "Poor" -> Icons.Default.SignalCellular1Bar to Color(0xFFF44336)
-        else -> Icons.Default.SignalCellularConnectedNoInternet0Bar to Color.Gray
+    val iconAndColor: Pair<androidx.compose.ui.graphics.vector.ImageVector, Color> = when (quality) {
+        "Excellent" -> Pair(Icons.Default.SignalCellularAlt, Color(0xFF4CAF50))
+        "Good" -> Pair(Icons.Default.SignalCellularAlt, Color(0xFF8BC34A))
+        "Fair" -> Pair(Icons.Default.SignalCellular4Bar, Color(0xFFFFC107))
+        "Poor" -> Pair(Icons.Default.Warning, Color(0xFFF44336))
+        else -> Pair(Icons.Default.SignalCellularConnectedNoInternet0Bar, Color.Gray)
     }
+    val icon = iconAndColor.first
+    val color = iconAndColor.second
 
     Row(
         verticalAlignment = Alignment.CenterVertically,

@@ -15,7 +15,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.globaloutcomes.phi.domain.model.Barangay
-import com.globaloutcomes.phi.domain.repository.BarangayRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,11 +23,31 @@ import java.util.*
 fun RegistrationScreen(
     onNavigateBack: () -> Unit,
     onRegistrationSuccess: (patientId: String) -> Unit,
-    viewModel: RegistrationViewModel = hiltViewModel(),
-    barangayRepository: BarangayRepository
+    viewModel: RegistrationViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    val barangays by barangayRepository.getAllBarangays().collectAsState(initial = emptyList())
+
+    // TODO: Load barangays from repository via ViewModel
+    val barangays = remember {
+        listOf(
+            Barangay(
+                id = "brgy-001",
+                name = "Barangay 1",
+                municipality = "Manila",
+                province = "Metro Manila",
+                region = "NCR",
+                islandGroup = "Luzon"
+            ),
+            Barangay(
+                id = "brgy-002",
+                name = "Barangay 2",
+                municipality = "Quezon City",
+                province = "Metro Manila",
+                region = "NCR",
+                islandGroup = "Luzon"
+            )
+        )
+    }
 
     // Handle success navigation
     LaunchedEffect(state.isSuccess) {

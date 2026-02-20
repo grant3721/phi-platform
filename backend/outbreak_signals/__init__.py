@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Any
 
 from shared.db import get_db_pool
+from shared.utils import decimal_to_float
 
 logger = logging.getLogger(__name__)
 
@@ -226,6 +227,9 @@ async def main(req: func.HttpRequest) -> func.HttpResponse:
                 "stored_signals": stored_signals
             }
         }
+
+        # Convert Decimal objects to float for JSON serialization
+        response = decimal_to_float(response)
 
         logger.info(f"Outbreak detection complete: {response['summary']['total_signals']} signals detected")
 

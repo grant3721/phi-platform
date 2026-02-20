@@ -1,6 +1,13 @@
 package com.globaloutcomes.phi.presentation.navigation
 
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -8,7 +15,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.globaloutcomes.phi.domain.repository.BarangayRepository
 import com.globaloutcomes.phi.presentation.home.HomeScreen
 import com.globaloutcomes.phi.presentation.patient.registration.RegistrationScreen
 import com.globaloutcomes.phi.presentation.scan.ScanScreen
@@ -42,9 +48,8 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun PHINavGraph(
+fun PHINavHost(
     navController: NavHostController = rememberNavController(),
-    barangayRepository: BarangayRepository,
     startDestination: String = Screen.Home.route
 ) {
     NavHost(
@@ -75,8 +80,7 @@ fun PHINavGraph(
                         // Pop registration screen from back stack
                         popUpTo(Screen.Registration.route) { inclusive = true }
                     }
-                },
-                barangayRepository = barangayRepository
+                }
             )
         }
 
@@ -205,36 +209,34 @@ fun PHINavGraph(
 }
 
 // Temporary placeholder screen for unimplemented screens
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PlaceholderScreen(
     title: String,
     onNavigateBack: () -> Unit
 ) {
-    androidx.compose.material3.Scaffold(
+    Scaffold(
         topBar = {
-            androidx.compose.material3.TopAppBar(
-                title = { androidx.compose.material3.Text(title) },
+            TopAppBar(
+                title = { Text(title) },
                 navigationIcon = {
-                    androidx.compose.material3.IconButton(onClick = onNavigateBack) {
-                        androidx.compose.material3.Icon(
-                            androidx.compose.material.icons.Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
         }
     ) { paddingValues ->
-        androidx.compose.foundation.layout.Box(
-            modifier = androidx.compose.ui.Modifier
+        Box(
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            contentAlignment = androidx.compose.ui.Alignment.Center
+            contentAlignment = Alignment.Center
         ) {
-            androidx.compose.material3.Text(
+            Text(
                 "$title\n(Coming Soon)",
-                style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center
             )
         }
     }

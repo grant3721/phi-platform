@@ -34,7 +34,6 @@ def analyze_with_claude(signal_data: Dict) -> str:
 
         # Build context for Claude
         signal_type = signal_data.get('signal_type', 'UNKNOWN')
-        barangay = signal_data.get('barangay_name', 'Unknown')
         municipality = signal_data.get('municipality', 'Unknown')
         province = signal_data.get('province', 'Unknown')
 
@@ -43,7 +42,7 @@ def analyze_with_claude(signal_data: Dict) -> str:
 
 **Signal Details:**
 - Type: {signal_type}
-- Location: Barangay {barangay}, {municipality}, {province}
+- Location: {municipality}, {province}
 - Detection Date: {datetime.now().strftime('%Y-%m-%d')}
 
 **Health Metrics:**
@@ -100,11 +99,11 @@ def generate_mock_analysis(signal_data: Dict) -> str:
     """Generate mock analysis when Claude API is not available"""
 
     signal_type = signal_data.get('signal_type', 'UNKNOWN')
-    barangay = signal_data.get('barangay_name', 'Unknown')
+    municipality = signal_data.get('municipality', 'Unknown')
 
     mock_analysis = {
         "risk_level": "MEDIUM",
-        "risk_justification": f"Based on the {signal_type} signal patterns in {barangay}, the current risk level is assessed as MEDIUM. This is a mock analysis as Claude AI is not configured.",
+        "risk_justification": f"Based on the {signal_type} signal patterns in {municipality}, the current risk level is assessed as MEDIUM. This is a mock analysis as Claude AI is not configured.",
         "likely_causes": [
             "Seasonal variation in health metrics",
             "Environmental factors affecting the community",
@@ -136,20 +135,25 @@ async def get_active_signals(conn: asyncpg.Connection, limit: int = 10) -> List[
         SELECT
             s.id,
             s.barangay_id,
-            b.name as barangay_name,
-            b.municipality,
-            b.province,
+            s.municipality,
+            s.province,
             s.signal_type,
             s.severity,
             s.status,
             s.detected_at,
-            s.description,
-            s.signal_data,
-            s.recommended_actions
+            s.affected_count,
+            s.baseline_count,
+            s.deviation_percentage,
+            s.avg_respiratory_rate,
+            s.avg_spo2,
+            s.avg_heart_rate,
+            s.signal_start_date,
+            s.signal_end_date,
+            s.days_duration,
+            s.ai_recommended_actions
         FROM gold.outbreak_signals s
-        INNER JOIN silver.barangays b ON b.id = s.barangay_id
         WHERE s.status = 'ACTIVE'
-          AND (s.recommended_actions IS NULL OR s.recommended_actions = '{}')
+          AND (s.ai_recommended_actions IS NULL OR s.ai_recommended_actions = '')
         ORDER BY s.severity DESC, s.detected_at DESC
         LIMIT $1
     """
@@ -158,16 +162,17 @@ async def get_active_signals(conn: asyncpg.Connection, limit: int = 10) -> List[
     return [dict(r) for r in results]
 
 
-async def update_signal_analysis(conn: asyncpg.Connection, signal_id: str, analysis: str):
+async def update_signal_analysis(conn: asyncpg.Connection, signal_id: int, analysis: str):
     """Update signal with AI analysis results"""
 
     await conn.execute("""
         UPDATE gold.outbreak_signals
-        SET recommended_actions = $1,
-            analyzed_at = $2,
-            updated_at = $2
+        SET ai_recommended_actions = $1,
+            ai_analyzed_at = $2,
+            ai_analysis_completed = true,
+            last_updated = $2
         WHERE id = $3
-    """, analysis, int(datetime.utcnow().timestamp() * 1000), signal_id)
+    """, analysis, datetime.utcnow(), signal_id)
 
 
 async def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -189,11 +194,10 @@ async def main(req: func.HttpRequest) -> func.HttpResponse:
             if signal_id:
                 # Analyze specific signal
                 signal = await conn.fetchrow("""
-                    SELECT s.*, b.name as barangay_name, b.municipality, b.province
+                    SELECT s.*
                     FROM gold.outbreak_signals s
-                    INNER JOIN silver.barangays b ON b.id = s.barangay_id
                     WHERE s.id = $1
-                """, signal_id)
+                """, int(signal_id))
 
                 if not signal:
                     return func.HttpResponse(
@@ -221,24 +225,22 @@ async def main(req: func.HttpRequest) -> func.HttpResponse:
             # Analyze each signal
             analyses = []
             for signal in signals_to_analyze:
-                logger.info(f"Analyzing signal {signal['id']}: {signal['signal_type']} in {signal['barangay_name']}")
+                logger.info(f"Analyzing signal {signal['id']}: {signal['signal_type']} in {signal['municipality']}, {signal['province']}")
 
                 # Prepare signal data for Claude
                 signal_data = {
                     'signal_type': signal['signal_type'],
-                    'barangay_name': signal['barangay_name'],
                     'municipality': signal['municipality'],
                     'province': signal['province'],
                     'severity': signal['severity'],
-                    'description': signal['description']
+                    'affected_count': signal.get('affected_count'),
+                    'baseline_count': signal.get('baseline_count'),
+                    'deviation_percentage': signal.get('deviation_percentage'),
+                    'avg_respiratory_rate': signal.get('avg_respiratory_rate'),
+                    'avg_spo2': signal.get('avg_spo2'),
+                    'avg_heart_rate': signal.get('avg_heart_rate'),
+                    'days_duration': signal.get('days_duration')
                 }
-
-                # Add parsed signal_data if available
-                if signal.get('signal_data'):
-                    try:
-                        signal_data.update(json.loads(signal['signal_data']))
-                    except:
-                        pass
 
                 # Get AI analysis
                 analysis_json = analyze_with_claude(signal_data)
@@ -248,7 +250,8 @@ async def main(req: func.HttpRequest) -> func.HttpResponse:
 
                 analyses.append({
                     "signal_id": signal['id'],
-                    "barangay": signal['barangay_name'],
+                    "municipality": signal['municipality'],
+                    "province": signal['province'],
                     "signal_type": signal['signal_type'],
                     "analysis": json.loads(analysis_json)
                 })

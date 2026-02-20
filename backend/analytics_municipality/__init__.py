@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Any
 
 from shared.db import get_db_pool
+from shared.utils import decimal_to_float
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +62,7 @@ async def get_municipality_stats(conn: asyncpg.Connection, province: str = None,
             LEFT JOIN silver.patients p ON p.barangay_id = b.id
             LEFT JOIN silver.scans s ON s.patient_id = p.id
             LEFT JOIN silver.referrals r ON r.patient_id = p.id AND r.status IN ('PENDING', 'CONFIRMED')
-            LEFT JOIN silver.bhw_incentives bi ON bi.patient_id = p.id
+            LEFT JOIN silver.bhw_incentives bi ON bi.scan_id = s.id
             {where_clause}
             GROUP BY b.municipality, b.province, b.region
         )
@@ -150,6 +151,9 @@ async def main(req: func.HttpRequest) -> func.HttpResponse:
             "stats": stats,
             "barangays": barangays
         }
+
+        # Convert Decimal objects to float for JSON serialization
+        response = decimal_to_float(response)
 
         logger.info(f"Municipality analytics complete: {len(stats)} municipalities")
 
