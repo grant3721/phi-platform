@@ -18,6 +18,8 @@ import androidx.navigation.navArgument
 import com.globaloutcomes.phi.presentation.home.HomeScreen
 import com.globaloutcomes.phi.presentation.patient.registration.RegistrationScreen
 import com.globaloutcomes.phi.presentation.scan.ScanScreen
+import com.globaloutcomes.phi.presentation.settings.SettingsScreen
+import com.globaloutcomes.phi.presentation.settings.devmenu.DevMenuScreen
 
 // Navigation Routes
 sealed class Screen(val route: String) {
@@ -45,6 +47,8 @@ sealed class Screen(val route: String) {
     object ReferralDetail : Screen("referral/{referralId}") {
         fun createRoute(referralId: String) = "referral/$referralId"
     }
+    object Settings : Screen("settings")
+    object DevMenu : Screen("dev-menu")
 }
 
 @Composable
@@ -64,6 +68,9 @@ fun PHINavHost(
                 },
                 onNavigateToPatients = {
                     navController.navigate(Screen.PatientList.route)
+                },
+                onNavigateToSettings = {
+                    navController.navigate(Screen.Settings.route)
                 }
             )
         }
@@ -202,6 +209,23 @@ fun PHINavHost(
             // TODO: Implement ReferralDetailScreen
             PlaceholderScreen(
                 title = "Referral Detail",
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // Settings Screen
+        composable(Screen.Settings.route) {
+            SettingsScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToDevMenu = {
+                    navController.navigate(Screen.DevMenu.route)
+                }
+            )
+        }
+
+        // Developer Menu
+        composable(Screen.DevMenu.route) {
+            DevMenuScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }

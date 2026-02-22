@@ -15,7 +15,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0.0"
+        versionName = "1.0.0-demo"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -36,9 +36,11 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "API_BASE_URL", "\"https://phi-platform-api.azurewebsites.net/api/\"")
+            buildConfigField("Boolean", "DEMO_MODE_AVAILABLE", "false")
         }
         debug {
             buildConfigField("String", "API_BASE_URL", "\"https://phi-platform-api.azurewebsites.net/api/\"")
+            buildConfigField("Boolean", "DEMO_MODE_AVAILABLE", "true")
         }
     }
 

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.globaloutcomes.phi.presentation.components.DemoModeBanner
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,9 +23,13 @@ import java.util.*
 fun HomeScreen(
     onNavigateToNewScan: () -> Unit,
     onNavigateToPatients: () -> Unit,
+    onNavigateToSettings: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+
+    Column {
+        DemoModeBanner()
 
     Scaffold(
         topBar = {
@@ -36,6 +41,15 @@ fun HomeScreen(
                             getCurrentDateString(),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onNavigateToSettings) {
+                        Icon(
+                            Icons.Default.Settings,
+                            contentDescription = "Settings",
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     }
                 },
@@ -132,6 +146,7 @@ fun HomeScreen(
                 }
             }
         }
+    }
     }
 }
 

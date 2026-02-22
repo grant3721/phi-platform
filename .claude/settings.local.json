@@ -60,7 +60,11 @@
       "Bash(grep:*)",
       "Bash(.gradlew.bat compileDebugKotlin:*)",
       "Bash(./gradlew assembleDebug:*)",
-      "Bash(JAVA_HOME=\"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\" ./gradlew:*)"
+      "Bash(JAVA_HOME=\"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\" ./gradlew:*)",
+      "Bash(adb devices:*)",
+      "Bash(\"C:\\\\Users\\\\Grant\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" devices)",
+      "Bash(\"C:\\\\Users\\\\Grant\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" install \"C:\\\\Users\\\\Grant\\\\PHI_V1\\\\android\\\\app\\\\build\\\\outputs\\\\apk\\\\debug\\\\app-debug.apk\")",
+      "Bash(\"C:\\\\Users\\\\Grant\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" install -r \"C:\\\\Users\\\\Grant\\\\PHI_V1\\\\android\\\\app\\\\build\\\\outputs\\\\apk\\\\debug\\\\app-debug.apk\")"
     ]
   }
 }
